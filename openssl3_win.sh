@@ -1,0 +1,1 @@
+docker run -dit --name openssl3 --rm -e GOTIFY_SERVER='https://<Server>/message' -e GOTIFY_KEY='<Key>' -v <Output>:/home/output openssl_win ./openssl3_win.sh
