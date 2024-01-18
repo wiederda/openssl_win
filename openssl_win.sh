@@ -1,1 +1,1 @@
-docker run -d --name openssl --rm -e GOTIFY_SERVER='https://<Server>/message' -e GOTIFY_KEY='<Key' -v <Output>:/home/output:rw openssl_win ./openssl_win.sh
+docker run -d --name openssl --rm -e GOTIFY_SERVER='https://<Server>/message' -e GOTIFY_KEY='<Key' -v <Output>:/home/output:rw wiederda/openssl_win ./openssl_win.sh
