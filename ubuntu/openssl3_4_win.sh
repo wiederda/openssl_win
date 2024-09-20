@@ -11,7 +11,7 @@ mkdir -p $Home/$Version
 rm -R $Pfad/*.zip
 chmod -R ugo+rwx $Home/$tmp
 
-git clone -b openssl-3.0 --single-branch https://github.com/openssl/openssl.git $Home/$Version
+git clone -b openssl-3.4 --single-branch https://github.com/openssl/openssl.git $Home/$Version
 chmod -R ugo+rwx $Home/$Version
 
 DATEI=$Home/$Version/VERSION.dat

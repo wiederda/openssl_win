@@ -1,27 +1,39 @@
-#!/bin/sh
+#!/bin/bash
 
-html=$(wget -qO- https://www.openssl.org/source/ | grep "openssl-3.1")
-file_name=$(echo "$html" | grep -oP 'href="\K[^"]+(?=")')
-file_version=$(echo "$file_name" | sed -n 1p) 
-Version=$(echo "$file_version" | sed 's/.tar.gz//')
 Pfad=/home/output
 Home=/home/Downloads
-Out=$Version
+Version=openssl
 tmp=tmp
 temp=/home/temp
 
-rm -R $Pfad
 mkdir -p $Home/$tmp
-mkdir -p $temp/$Out/bin
+mkdir -p $Home/$Version
+rm -R $Pfad/*.zip
 chmod -R ugo+rwx $Home/$tmp
-chmod -R ugo+rwx $temp
 
-cd $Home
-wget https://www.openssl.org/source/$file_version
-tar xzfv $Home/$file_version
+git clone -b openssl-3.1 --single-branch https://github.com/openssl/openssl.git $Home/$Version
 chmod -R ugo+rwx $Home/$Version
 
-cd $Home/$Version
+DATEI=$Home/$Version/VERSION.dat
+counter=0
+werte=()
+while IFS= read -r line
+do
+  
+  ((counter++))
+
+  if [ $counter -le 3 ]; then
+    IFS='=' read -r key value <<< "$line"
+    werte+=("$value")
+   else
+    break
+  fi
+
+done < "$DATEI"
+Out=$(IFS=.; echo "${werte[*]}")
+
+mkdir -p $temp/$Out/bin
+chmod -R ugo+rwx $temp
 
 chmod +x $Home/$Version/Configure
 $Home/$Version/Configure --cross-compile-prefix=x86_64-w64-mingw32- mingw64 --prefix=$Home/$tmp --openssldir=$Home/$tmp
