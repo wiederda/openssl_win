@@ -36,8 +36,9 @@ cp $Home/$Version/CHANGES.md $temp/$Out/
 
 cd $temp
 
-zip -r $Out.zip $Out/
-cp $Out.zip $Pfad
+#zip -r $Out.zip $Out/
+#cp $Out.zip $Pfad
+cp -R $Out $Pfad
 
 chmod -R ugo+rwx $Pfad/
 
