@@ -1,4 +1,4 @@
-!/bin/sh
+#!/bin/sh
 
 #html=$(wget -qO- https://github.com/openssl/openssl/releases/download/ | grep "openssl-3.0")
 #file_name=$(echo "$html" | grep -oP 'href="\K[^"]+(?=")')
@@ -45,3 +45,39 @@ if [ -n "$GOTIFY_SERVER" ]; then
      -H "X-Gotify-Key: $GOTIFY_KEY" \
      -d "{\"title\": \"Notification Title\", \"message\": \"OpenSSL $Out wurde erfolgreich erstellt\"}"
 fi
+
+
+
+#!/bin/bash
+
+# Datei, die eingelesen wird
+DATEI="/home/cb/Dokumente/test.txt"
+
+# Zählvariable für die Zeilen
+counter=0
+
+# Array zur Speicherung der Werte
+werte=()
+
+# Zeilenweise die Datei einlesen
+while IFS= read -r line
+do
+  # Zählvariable erhöhen
+  ((counter++))
+
+  # Nur die ersten 3 Zeilen verarbeiten
+  if [ $counter -le 3 ]; then
+    # Zeile bei '.' aufteilen
+    IFS='=' read -r key value <<< "$line"
+    
+    # Zahl in das Array speichern
+    werte+=("$value")
+  else
+    # Schleife beenden, wenn mehr als 3 Zeilen verarbeitet wurden
+    break
+  fi
+
+done < "$DATEI"
+Version=$(IFS=.; echo "${werte[*]}")
+# Alle gesammelten Werte ausgeben
+echo $Version
