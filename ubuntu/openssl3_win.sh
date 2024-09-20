@@ -3,23 +3,39 @@
 #html=$(wget -qO- https://github.com/openssl/openssl/releases/download/ | grep "openssl-3.0")
 #file_name=$(echo "$html" | grep -oP 'href="\K[^"]+(?=")')
 #file_version=$(echo "$file_name" | sed -n 1p) 
-Version=openssl-3.0
 Pfad=/home/output
 Home=/home/Downloads
-Out=openssl-3.0
+Version=openssl-3.0
 tmp=tmp
 temp=/home/temp
 
 mkdir -p $Home/$tmp
 mkdir -p $Home/$Version
 rm -R $Pfad/*.zip
-mkdir -p $temp/$Out/bin
 chmod -R ugo+rwx $Home/$tmp
-chmod -R ugo+rwx $temp
 
 git clone -b openssl-3.0 --single-branch https://github.com/openssl/openssl.git $Home/$Version
 #tar xzfv $Home/$file_version
 chmod -R ugo+rwx $Home/$Version
+
+# Datei, die eingelesen wird
+DATEI=$Home/$Version/VERSION.dat
+counter=0
+werte=()
+while IFS= read -r line
+do
+  ((counter++))
+  if [ $counter -le 3 ]; then
+    IFS='=' read -r key value <<< "$line"
+    werte+=("$value")
+  else
+    break
+  fi
+done < "$DATEI"
+Out=$(IFS=.; echo "${werte[*]}")
+
+mkdir -p $temp/$Out/bin
+chmod -R ugo+rwx $temp
 
 chmod +x $Home/$Version/Configure
 $Home/$Version/Configure --cross-compile-prefix=x86_64-w64-mingw32- mingw64 --prefix=$Home/$tmp --openssldir=$Home/$tmp
@@ -45,39 +61,3 @@ if [ -n "$GOTIFY_SERVER" ]; then
      -H "X-Gotify-Key: $GOTIFY_KEY" \
      -d "{\"title\": \"Notification Title\", \"message\": \"OpenSSL $Out wurde erfolgreich erstellt\"}"
 fi
-
-
-
-#!/bin/bash
-
-# Datei, die eingelesen wird
-DATEI="/home/cb/Dokumente/test.txt"
-
-# Zählvariable für die Zeilen
-counter=0
-
-# Array zur Speicherung der Werte
-werte=()
-
-# Zeilenweise die Datei einlesen
-while IFS= read -r line
-do
-  # Zählvariable erhöhen
-  ((counter++))
-
-  # Nur die ersten 3 Zeilen verarbeiten
-  if [ $counter -le 3 ]; then
-    # Zeile bei '.' aufteilen
-    IFS='=' read -r key value <<< "$line"
-    
-    # Zahl in das Array speichern
-    werte+=("$value")
-  else
-    # Schleife beenden, wenn mehr als 3 Zeilen verarbeitet wurden
-    break
-  fi
-
-done < "$DATEI"
-Version=$(IFS=.; echo "${werte[*]}")
-# Alle gesammelten Werte ausgeben
-echo $Version
