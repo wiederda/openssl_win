@@ -1,12 +1,12 @@
 #!/bin/sh
 
-#html=$(wget -qO- https://github.com/openssl/openssl/releases/download/ | grep "openssl-3.0")
-#file_name=$(echo "$html" | grep -oP 'href="\K[^"]+(?=")')
-#file_version=$(echo "$file_name" | sed -n 1p) 
-Version=openssl-3.0
+html=$(wget -qO- https://www.openssl.org/source/ | grep "openssl-3.0")
+file_name=$(echo "$html" | grep -oP 'href="\K[^"]+(?=")')
+file_version=$(echo "$file_name" | sed -n 1p) 
+Version=$(echo "$file_version" | sed 's/.tar.gz//')
 Pfad=/home/output
 Home=/home/Downloads
-Out=openssl-3.0
+Out=$Version
 tmp=tmp
 temp=/home/temp
 
@@ -16,9 +16,9 @@ mkdir -p $temp/$Out/bin
 chmod -R ugo+rwx $Home/$tmp
 chmod -R ugo+rwx $temp
 
-cd $Home/$Version
-git clone -b openssl-3.0 --single-branch https://github.com/openssl/openssl.git
-#tar xzfv $Home/$file_version
+cd $Home
+wget https://www.openssl.org/source/$file_version
+tar xzfv $Home/$file_version
 chmod -R ugo+rwx $Home/$Version
 
 cd $Home/$Version
@@ -36,8 +36,9 @@ cp $Home/$Version/CHANGES.md $temp/$Out/
 
 cd $temp
 
-zip -r $Out.zip $Out/
-cp $Out.zip $Pfad
+#zip -r $Out.zip $Out/
+#cp $Out.zip $Pfad
+cp -R $Out $Pfad
 
 chmod -R ugo+rwx $Pfad/
 

@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y tzdata curl \
 && apt-get install software-properties-common -y \
 && apt-get -y install build-essential checkinstall zlib1g-dev \
 && apt-get -y install mingw-w64 \
-&& apt-get -y install wget \
+&& apt-get -y install git \
 && apt-get -y install zip
 RUN mkdir -p /home/scripts
 RUN mkdir -p /home/Downloads
