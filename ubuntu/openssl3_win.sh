@@ -1,4 +1,4 @@
-#!/bin/sh
+!/bin/sh
 
 #html=$(wget -qO- https://github.com/openssl/openssl/releases/download/ | grep "openssl-3.0")
 #file_name=$(echo "$html" | grep -oP 'href="\K[^"]+(?=")')
@@ -11,17 +11,15 @@ tmp=tmp
 temp=/home/temp
 
 mkdir -p $Home/$tmp
+mkdir -p $Home/$Version
 rm -R $Pfad/*.zip
 mkdir -p $temp/$Out/bin
 chmod -R ugo+rwx $Home/$tmp
 chmod -R ugo+rwx $temp
 
-cd $Home/$Version
-git clone -b openssl-3.0 --single-branch https://github.com/openssl/openssl.git
+git clone -b openssl-3.0 --single-branch https://github.com/openssl/openssl.git $Home/$Version
 #tar xzfv $Home/$file_version
 chmod -R ugo+rwx $Home/$Version
-
-cd $Home/$Version
 
 chmod +x $Home/$Version/Configure
 $Home/$Version/Configure --cross-compile-prefix=x86_64-w64-mingw32- mingw64 --prefix=$Home/$tmp --openssldir=$Home/$tmp
