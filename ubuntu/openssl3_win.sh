@@ -19,7 +19,6 @@ counter=0
 werte=()
 while IFS= read -r line
 do
-  
   ((counter++))
 
   if [ $counter -le 3 ]; then
@@ -48,10 +47,10 @@ cp $Home/$Version/CHANGES.md $temp/$Out/
 
 cd $temp
 
-zip -r $Out.zip $Out/
+zip -r $Out.zip $Out
 cp $Out.zip $Pfad
 
-chmod -R ugo+rwx $Pfad/
+chmod -R ugo+rwx $Pfad
 
 if [ -n "$GOTIFY_SERVER" ]; then
     curl -X POST $GOTIFY_SERVER \
