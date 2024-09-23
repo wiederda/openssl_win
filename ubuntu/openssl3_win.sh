@@ -2,7 +2,6 @@
 
 Pfad=/home/output
 Home=/home/Downloads
-Version=openssl
 tmp=tmp
 temp=/home/temp
 
@@ -28,6 +27,8 @@ download_openssl_version() {
 
 download_openssl_version "3.0"
 
+tar xzfv $Home/$latest_version.tar.gz
+
 chmod -R ugo+rwx $Home/$latest_version
 
 cd $Home/$latest_version
@@ -39,9 +40,9 @@ make
 make install
 
 cp -R $Home/$tmp/bin/ $temp/$Out/
-cp $Home/$Version/LICENSE.txt $temp/$Out/
-cp $Home/$Version/NEWS.md $temp/$Out/
-cp $Home/$Version/CHANGES.md $temp/$Out/
+cp $Home/$latest_version/LICENSE.txt $temp/$Out/
+cp $Home/$latest_version/NEWS.md $temp/$Out/
+cp $Home/$latest_version/CHANGES.md $temp/$Out/
 
 cd $temp
 
