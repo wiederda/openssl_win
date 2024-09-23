@@ -7,10 +7,6 @@ temp=/home/temp
 
 mkdir -p $Home/$tmp
 rm -R $Pfad/*.zip
-mkdir -p $temp/$Out/bin
-chmod -R ugo+rwx $Home/$tmp
-chmod -R ugo+rwx $temp
-
 cd $Home
 
 download_openssl_version() {
@@ -26,8 +22,12 @@ download_openssl_version() {
 }
 
 download_openssl_version "3.3"
-tar xzfv $latest_version.tar.gz
+
 Out=$latest_version
+mkdir -p $temp/$Out/
+chmod -R ugo+rwx $Home/$tmp
+chmod -R ugo+rwx $temp
+
 tar xzfv $Home/$latest_version.tar.gz
 
 chmod -R ugo+rwx $Home/$latest_version
@@ -40,12 +40,13 @@ $Home/$latest_version/Configure --cross-compile-prefix=x86_64-w64-mingw32- mingw
 make
 make install
 
-cp -R $Home/$tmp/bin/ $temp/$Out/
-cp $Home/$latest_version/LICENSE.txt $temp/$Out/
-cp $Home/$latest_version/NEWS.md $temp/$Out/
-cp $Home/$latest_version/CHANGES.md $temp/$Out/
-
 cd $temp
+
+mkdir $Out
+cp -R $Home/$tmp/bin/ $Out/
+cp $Home/$latest_version/LICENSE.txt $Out/
+cp $Home/$latest_version/NEWS.md $Out/
+cp $Home/$latest_version/CHANGES.md $Out/
 
 zip -r $latest_version.zip $Out
 cp $latest_version.zip $Pfad
