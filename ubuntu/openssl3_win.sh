@@ -26,7 +26,8 @@ download_openssl_version() {
 }
 
 download_openssl_version "3.0"
-
+tar xzfv $latest_version.tar.gz
+Out=$latest_version
 tar xzfv $Home/$latest_version.tar.gz
 
 chmod -R ugo+rwx $Home/$latest_version
@@ -56,5 +57,5 @@ if [ -n "$GOTIFY_SERVER" ]; then
     curl -X POST $GOTIFY_SERVER \
      -H "Content-Type: application/json" \
      -H "X-Gotify-Key: $GOTIFY_KEY" \
-     -d "{\"title\": \"Notification Title\", \"message\": \ $latest_version " wurde erfolgreich erstellt\"}"
+     -d "{\"title\": \"Notification Title\", \"message\": \"$latest_version wurde erfolgreich erstellt\"}"
 fi
