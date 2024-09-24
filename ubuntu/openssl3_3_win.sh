@@ -11,13 +11,12 @@ cd $Home
 
 download_openssl_version() {
     major_version=$1
-    latest_version=$(curl -s https://api.github.com/repos/openssl/openssl/releases | grep '"tag_name":' | grep "$major_version" | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    latest_version=$(curl -s https://api.github.com/repos/openssl/openssl/releases | grep '"tag_name":' | grep "$major_version" | grep -Eo "$major_version\.[0-9]+" | head -n 1)
     
     if [ -n "$latest_version" ]; then
-        #echo "Downloading OpenSSL version $latest_version..."
-        wget https://github.com/openssl/openssl/releases/download/$latest_version/$latest_version.tar.gz
-   #else
-    #    echo "No releases found for OpenSSL $major_version.x"
+        
+        wget https://github.com/openssl/openssl/releases/download/openssl-$latest_version/openssl-$latest_version.tar.gz
+    
     fi
 }
 
