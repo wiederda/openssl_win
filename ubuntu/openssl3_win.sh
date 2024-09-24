@@ -18,6 +18,7 @@ download_openssl_version() {
         wget https://github.com/openssl/openssl/releases/download/openssl-$latest_version/openssl-$latest_version.tar.gz
     
     fi
+}
 
 download_openssl_version "3.0"
 
